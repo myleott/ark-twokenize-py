@@ -19,11 +19,11 @@ There have been at least 2 other Java ports, but they are not in the lineage for
 
 Ported to Python by Myle Ott <myleott@gmail.com>.
 """
+from __future__ import unicode_literals
 
 import operator
 import re
 import sys
-from __future__ import unicode_literals
 
 try:
     from html.parser import HTMLParser
