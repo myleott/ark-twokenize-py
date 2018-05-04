@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Twokenize -- a tokenizer designed for Twitter text in English and some other European languages.
@@ -292,16 +293,9 @@ def tokenize(text):
 # Twitter text comes HTML-escaped, so unescape it.
 # We also first unescape &amp;'s, in case the text has been buggily double-escaped.
 def normalizeTextForTagger(text):
+    assert sys.version_info[0] >= 3 and sys.version_info[1] > 3, 'Python version >3.3 required'
     text = text.replace("&amp;", "&")
-    #http://stackoverflow.com/questions/2360598
-    #/how-do-i-unescape-html-entities-in-a-string-in-python-3-1
-    if sys.version.info[0] > 2:
-        if sys.version.info[0] == 3 and sys.version.info[1] <= 3:
-            text = HTMLParser().unescape(text)
-        else:
-            text = html.unescape(text)
-    else:
-        text = HTMLParser().unescape(text)
+    text = html.unescape(text)
     return text
 
 # This is intended for raw tweet text -- we do some HTML entity unescaping before running the tagger.
@@ -312,3 +306,8 @@ def normalizeTextForTagger(text):
 def tokenizeRawTweetText(text):
     tokens = tokenize(normalizeTextForTagger(text))
     return tokens
+
+
+if __name__ == '__main__':
+    for line in sys.stdin:
+        print(' '.join(tokenizeRawTweetText(line)))
